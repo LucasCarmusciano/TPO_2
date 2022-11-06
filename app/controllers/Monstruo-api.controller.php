@@ -23,12 +23,17 @@ class MonsterApiController {
     public function getMonsters($params = null) {
         $order = $_GET['order'];
         $form = $_GET['form'];
-        // if (in_array($order,$this->model->getColumns())) { // compruebo que el get obtenido sea correcto
-        //     $monsters = $this->model->getAllOrderBy($order, $form);
-        // }else{
-        //     $monsters = $this->model->getAll();
-        // }
-        $this->view->response($order);
+        if(!$order==null){
+            if ((in_array($order,$this->model->getColumns())&&(($form=='ASC')||($form=='DESC')))) { // compruebo que el get obtenido sea correcto
+                $monsters = $this->model->getAllOrderBy($order, $form);
+                $this->view->response($monsters);
+            }else{
+                $this->view->response("Parametros GET incorrectos", 400); //
+            }
+        }else{
+            $monsters = $this->model->getAll();
+            $this->view->response($monsters);
+        }
     }
 
     public function getMonster($params = null) {
