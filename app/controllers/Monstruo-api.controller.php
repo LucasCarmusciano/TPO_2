@@ -24,7 +24,7 @@ class MonsterApiController {
         $order = $_GET['order'];
         $form = $_GET['form'];
         if(!$order==null){
-            if ((in_array($order,$this->model->getColumns())&&(($form=='ASC')||($form=='DESC')))) { // compruebo que el get obtenido sea correcto
+            if ((in_array($order,$this->model->getColumns())&&(($form==null)||($form=='ASC')||($form=='DESC')))) { // compruebo que el get obtenido sea correcto
                 $monsters = $this->model->getAllOrderBy($order, $form);
                 $this->view->response($monsters);
             }else{
