@@ -3,9 +3,6 @@
         private $db;
         private $columns;
 
-        // if (isset ($_GET["orden"])&& isset($_GET["forma"])) {
-        //     # code...
-        // }
         function __construct(){
             $this->db = new PDO('mysql:host=localhost;'.'dbname=Bestiario_TPE-Web2;charset=utf8', 'root', '');
             $this->columns = array('id', 'nombre', 'debilidad', 'descripcion', 'categoria');
@@ -23,11 +20,11 @@
             return $query->fetchAll(PDO::FETCH_OBJ);
         }
 
-        public function getAllOrderBy($order, $form= 'ASC'){
+        public function getAllOrderBy($order, $direction= 'ASC'){
             $query = $this->db->prepare('SELECT Monstruo.id, Monstruo.nombre, Monstruo.debilidad, Monstruo.descripcion, Categoria.nombre as categoria
                                          FROM Monstruo
                                          INNER JOIN Categoria ON (Monstruo.id_Categoria_fk=Categoria.id)
-                                         ORDER BY '.$order.' '.$form);
+                                         ORDER BY '.$order.' '.$direction);
             $query->execute();
             return $query->fetchAll(PDO::FETCH_OBJ);
         }
