@@ -5,7 +5,7 @@
 
         function __construct(){
             $this->db = new PDO('mysql:host=localhost;'.'dbname=Bestiario_TPE-Web2;charset=utf8', 'root', '');
-            $this->columns = array('id', 'nombre', 'debilidad', 'descripcion', 'categoria');
+            $this->columns = array('id', 'nombre', 'debilidad', 'descripcion', 'categoria', 'imagen');
         }
 
         public function getColumns(){
@@ -30,7 +30,7 @@
         }
 
         public function get($id){
-            $query = $this->db->prepare('SELECT Monstruo.id, Monstruo.nombre, Monstruo.debilidad, Monstruo.descripcion, Categoria.nombre as nombre2, Monstruo.imagen
+            $query = $this->db->prepare('SELECT Monstruo.id, Monstruo.nombre, Monstruo.debilidad, Monstruo.descripcion, Categoria.nombre as categoria, Monstruo.imagen
                                         FROM Monstruo
                                         INNER JOIN Categoria ON (Monstruo.id_Categoria_fk=Categoria.id) WHERE Monstruo.id = (?)');
             $query->execute([$id]);
@@ -60,14 +60,24 @@
         //     return $query->fetchAll(PDO::FETCH_OBJ);
         // }
 
-        // public function update($nombre, $debilidad, $descripcion, $id_Categoria_fk, $id, $imagen= null){
-        //     $pathImg = null;
-        //     if ($imagen){
-        //         $pathImg = $this->uploadImage($imagen);
-        //     }
-        //     $query = $this->db->prepare('UPDATE Monstruo SET nombre=?, debilidad=?, descripcion=?, id_Categoria_fk=?, imagen=? WHERE id=?');
-        //     $query->execute([$nombre, $debilidad, $descripcion, $id_Categoria_fk, $pathImg, $id]);
-        // }
+        public function update($nombre, $debilidad, $descripcion, $id_Categoria_fk, $id, $imagen= null){
+            $pathImg = null;
+            if ($imagen){
+                $pathImg = $this->uploadImage($imagen);
+            }
+            $query = $this->db->prepare('UPDATE Monstruo SET nombre=?, debilidad=?, descripcion=?, id_Categoria_fk=?, imagen=? 
+                                        WHERE id=?');
+            $query->execute([$nombre, $debilidad, $descripcion, $id_Categoria_fk, $pathImg, $id]);
+        }
+
+        public function getIdCategoriaFk($categoria){
+            $query = $this->db->prepare('SELECT Monstruo.id_Categoria_fk
+                                        FROM Monstruo
+                                        INNER JOIN Categoria ON (Monstruo.id_Categoria_fk=Categoria.id)
+                                        WHERE Categoria.nombre = (?)');
+            $query->execute([$categoria]);
+            return $query->fetch(PDO::FETCH_OBJ);
+        }
 
         private function uploadImage($imagen){
             $target = './images/' . uniqid() . '.jpg';

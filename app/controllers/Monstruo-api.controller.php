@@ -86,4 +86,30 @@ class MonsterApiController {
         }
     }
 
+    public function updateMonster($params = null) {
+        $monster = $this->getData();
+        $id = $params[':ID'];
+        $autocompleter = $this->model->get($id);
+            if(empty($monster->nombre)){
+                $monster->nombre = $autocompleter->nombre;
+            }
+            if(empty($monster->debilidad)){
+                $monster->debilidad = $autocompleter->debilidad;
+            }
+            if(empty($monster->descripcion)){
+                $monster->descripcion = $autocompleter->descripcion;
+            }
+            if(empty($monster->id_Categoria_fk)){
+                $categoria = $autocompleter->categoria;
+                $monster->id_Categoria_fk = $this->model->getIdCategoriaFk($categoria)->id_Categoria_fk;
+            }
+            if(empty($monster->imagen)){
+                $monster->imagen = $autocompleter->imagen;
+            }
+        $this->model->update($monster->nombre, $monster->debilidad, $monster->descripcion, $monster->id_Categoria_fk, $id, $monster->imagen);
+
+        $monster = $this->model->get($id);
+        $this->view->response($monster, 201);
+    }
+
 }
