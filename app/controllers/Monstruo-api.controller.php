@@ -23,32 +23,35 @@ class MonsterApiController {
     public function getMonsters($params = null) {
         $order = $_GET['order'];
         $direction = $_GET['direction'];
-        // verifico que exista 'page' y 'limit' para transformarlo en int
-        if(isset($_GET['page'])&&isset($_GET['limit'])){
-            $page = (int) $_GET['page'];
-            $limit = (int) $_GET['limit'];
-        }
+        $page = $_GET['page'];
+        $limit = $_GET['limit'];
         if(!$order==null){
             if ((in_array($order,$this->model->getColumns())&&(($direction==null)||($direction=='ASC')||($direction=='DESC')))) { // compruebo que el get obtenido sea correcto
                 $monsters = $this->model->getAllOrderBy($order, $direction);
-                // si 'page' y 'limit' son de tipo int, selecciono la pagina indicada
-                if((is_int($page))&(is_int($limit))){
-                    $monsters = array_slice($monsters, $page*$limit, $limit);
-                }
-                $this->view->response($monsters);
+                $this->paginacion($monsters, $page, $limit);
             }else{
                 $this->view->response("Parametros GET incorrectos", 400); //
             }
         }else{
             $monsters = $this->model->getAll();
-            // si 'page' y 'limit' son de tipo int, selecciono la pagina indicada
-            if((is_int($page))&(is_int($limit))){
-                $monsters = array_slice($monsters, $page*$limit, $limit);
-            }
-            $this->view->response($monsters);
+            $this->paginacion($monsters, $page, $limit);
         }
     }
 
+    private function paginacion($list, $page, $limit){
+        if(isset($page)&&isset($limit)){
+            // si 'page' y 'limit' son de tipo int, selecciono la pagina indicada
+            if ((filter_var($page, FILTER_VALIDATE_INT)!== false)&&(filter_var($limit, FILTER_VALIDATE_INT) !== false)){
+              $list = array_slice($list, $page*$limit, $limit);
+              $this->view->response($list);
+            }else{
+                $this->view->response("Pagina o limite incorrectos", 400); //
+            }
+        }else{
+            $this->view->response($list, 200);
+        }
+    }
+    
     public function getMonster($params = null) {
         $id = $params[':ID'];
         $monster = $this->model->get($id);
