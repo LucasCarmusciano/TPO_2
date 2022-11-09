@@ -62,7 +62,7 @@ class CategorieApiController {
         if ($categorie)
             $this->view->response($categorie);
         else 
-            $this->view->response("La tarea con el id=$id no existe", 404);
+            $this->view->response("La categoria con el id=$id no existe", 404);
     }
 
     public function deleteCategorie($params = null) {
@@ -78,7 +78,7 @@ class CategorieApiController {
             $this->model->delete($id);
             $this->view->response($categorie);
         } else 
-            $this->view->response("La tarea con el id=$id no existe", 404);
+            $this->view->response("La categoria con el id=$id no existe", 404);
     }
 
     public function insertCategorie($params = null) {

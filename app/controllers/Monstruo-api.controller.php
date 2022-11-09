@@ -84,7 +84,7 @@ class MonsterApiController {
         if ($monster)
         $this->view->response($monster);
         else 
-        $this->view->response("La tarea con el id=$id no existe", 404);
+        $this->view->response("El monstruo con el id=$id no existe", 404);
     }
     
     public function deleteMonster($params = null) {
@@ -100,7 +100,7 @@ class MonsterApiController {
                 $this->model->delete($id);
                 $this->view->response($monster);
             } else 
-            $this->view->response("La tarea con el id=$id no existe", 404);
+            $this->view->response("El monstruo con el id=$id no existe", 404);
         }
         
         public function insertMonster($params = null) {
