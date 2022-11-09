@@ -2,6 +2,7 @@
 require_once './libs/Router.php';
 require_once './app/controllers/Monstruo-api.controller.php';
 require_once './app/controllers/Categoria-api.controller.php';
+require_once './app/controllers/Reporte-api.controller.php';
 
 require_once './app/controllers/Admin-api.controller.php';
 
@@ -10,7 +11,6 @@ $router = new Router();
 
 // defina la tabla de ruteo
 $router->addRoute('monster', 'GET', 'MonsterApiController', 'getMonsters');
-$router->addRoute('monster/:Categorie', 'GET', 'MonsterApiController', 'getFilterMonsters');
 $router->addRoute('monster/:ID', 'GET', 'MonsterApiController', 'getMonster');
 $router->addRoute('monster/:ID', 'DELETE', 'MonsterApiController', 'deleteMonster');
 $router->addRoute('monster', 'POST', 'MonsterApiController', 'insertMonster'); 
@@ -21,6 +21,12 @@ $router->addRoute('categorie/:ID', 'GET', 'CategorieApiController', 'getCategori
 $router->addRoute('categorie/:ID', 'DELETE', 'CategorieApiController', 'deleteCategorie');
 $router->addRoute('categorie', 'POST', 'CategorieApiController', 'insertCategorie'); 
 $router->addRoute('categorie/:ID', 'PUT', 'CategorieApiController', 'updateCategorie');
+
+$router->addRoute('report', 'GET', 'ReportApiController', 'getReports');
+$router->addRoute('report/:ID', 'GET', 'ReportApiController', 'getReport');
+$router->addRoute('report/:ID', 'DELETE', 'ReportApiController', 'deleteReport');
+$router->addRoute('report', 'POST', 'ReportApiController', 'insertReport'); 
+$router->addRoute('report/:ID', 'PUT', 'ReportApiController', 'updateReport');
 
 $router->addRoute('admin/token', 'GET', 'AdminApiController', 'getToken'); 
 
