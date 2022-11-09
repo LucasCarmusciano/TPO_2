@@ -5,12 +5,14 @@ require_once './app/views/api.view.php';
 class MonsterApiController {
     private $model;
     private $view;
+    private $authHelper;
 
     private $data;
 
     public function __construct() {
         $this->model = new MonsterModel();
         $this->view = new ApiView();
+        $this->authHelper = new AuthApiHelper();
         
         // lee el body del request
         $this->data = file_get_contents("php://input");
@@ -37,7 +39,6 @@ class MonsterApiController {
             $this->paginacion($monsters, $page, $limit);
         }
     }
-
     private function paginacion($list, $page, $limit){
         if(isset($page)&&isset($limit)){
             // si 'page' y 'limit' son de tipo int, selecciono la pagina indicada
@@ -66,6 +67,11 @@ class MonsterApiController {
     public function deleteMonster($params = null) {
         $id = $params[':ID'];
 
+        if(!$this->authHelper->isLoggedIn()){
+            $this->view->response("No estas logeado", 401);
+            return;
+        }
+
         $monster = $this->model->get($id);
         if ($monster) {
             $this->model->delete($id);
@@ -77,6 +83,11 @@ class MonsterApiController {
     public function insertMonster($params = null) {
         $monster = $this->getData();
 
+        if(!$this->authHelper->isLoggedIn()){
+            $this->view->response("No estas logeado", 401);
+            return;
+        }
+        
         if (empty($monster->nombre) || empty($monster->debilidad) || empty($monster->descripcion) || empty($monster->id_Categoria_fk)) {
             $this->view->response("Complete los datos", 400);
         } else {
