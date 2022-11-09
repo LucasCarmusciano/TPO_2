@@ -40,6 +40,28 @@ class MonsterApiController {
             $this->paginacion($monsters, $page, $limit);
         }
     }
+    
+    public function getFilterMonsters($params = null){
+        $nombreCategoria = $params[':Categorie'];
+        $order = $_GET['order'];
+        $direction = $_GET['direction'];
+        $page = $_GET['page'];
+        $limit = $_GET['limit'];
+        if(!$order==null){
+            // compruebo que el get obtenido sea correcto
+            if ((in_array($order,$this->model->getColumns())&&(($direction==null)||($direction=='ASC')||($direction=='DESC')))) {
+                $monsters = $this->model->getFilterOrderBy($nombreCategoria, $order, $direction);
+                $this->paginacion($monsters, $page, $limit);
+            }else{
+                $this->view->response("Parametros GET incorrectos", 400); //
+            }
+        }else{
+            $monsters = $this->model->getFilter($nombreCategoria);
+            $this->paginacion($monsters, $page, $limit);
+        }
+    }
+
+    // Metodo privado para paginar en caso de que existan los parametros correctos.
     private function paginacion($list, $page, $limit){
         if(isset($page)&&isset($limit)){
             // si 'page' y 'limit' son de tipo int, selecciono la pagina indicada
@@ -57,49 +79,55 @@ class MonsterApiController {
     public function getMonster($params = null) {
         $id = $params[':ID'];
         $monster = $this->model->get($id);
-
+        
         // si no existe devuelvo 404
         if ($monster)
-            $this->view->response($monster);
+        $this->view->response($monster);
         else 
-            $this->view->response("La tarea con el id=$id no existe", 404);
+        $this->view->response("La tarea con el id=$id no existe", 404);
     }
-
+    
     public function deleteMonster($params = null) {
         $id = $params[':ID'];
-
-        if(!$this->authHelper->isLoggedIn()){
-            $this->view->response("No estas logeado", 401);
-            return;
-        }
-
-        $monster = $this->model->get($id);
-        if ($monster) {
-            $this->model->delete($id);
-            $this->view->response($monster);
-        } else 
+        
+        // if(!$this->authHelper->isLoggedIn()){
+            //     $this->view->response("No estas logeado", 401);
+            //     return;
+            // }
+            
+            $monster = $this->model->get($id);
+            if ($monster) {
+                $this->model->delete($id);
+                $this->view->response($monster);
+            } else 
             $this->view->response("La tarea con el id=$id no existe", 404);
-    }
-
-    public function insertMonster($params = null) {
-        $monster = $this->getData();
-
-        if(!$this->authHelper->isLoggedIn()){
-            $this->view->response("No estas logeado", 401);
-            return;
         }
         
-        if (empty($monster->nombre) || empty($monster->debilidad) || empty($monster->descripcion) || empty($monster->id_Categoria_fk)) {
-            $this->view->response("Complete los datos", 400);
-        } else {
-            $id = $this->model->insert($monster->nombre, $monster->debilidad, $monster->descripcion, $monster->id_Categoria_fk, $monster->imagen);
-            $monster = $this->model->get($id);
-            $this->view->response($monster, 201);
-        }
-    }
+        public function insertMonster($params = null) {
+            $monster = $this->getData();
+            
+            // if(!$this->authHelper->isLoggedIn()){
+                //     $this->view->response("No estas logeado", 401);
+                //     return;
+                // }
+                
+                if (empty($monster->nombre) || empty($monster->debilidad) || empty($monster->descripcion) || empty($monster->id_Categoria_fk)) {
+                    $this->view->response("Complete los datos", 400);
+                } else {
+                    $id = $this->model->insert($monster->nombre, $monster->debilidad, $monster->descripcion, $monster->id_Categoria_fk, $monster->imagen);
+                    $monster = $this->model->get($id);
+                    $this->view->response($monster, 201);
+                }
+            }
+            
+            public function updateMonster($params = null) {
+                $monster = $this->getData();
+                
+                // if(!$this->authHelper->isLoggedIn()){
+                    //     $this->view->response("No estas logeado", 401);
+        //     return;
+        // }
 
-    public function updateMonster($params = null) {
-        $monster = $this->getData();
         $id = $params[':ID'];
         $autocompleter = $this->model->get($id);
             if(empty($monster->nombre)){

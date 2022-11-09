@@ -10,6 +10,7 @@ $router = new Router();
 
 // defina la tabla de ruteo
 $router->addRoute('monster', 'GET', 'MonsterApiController', 'getMonsters');
+$router->addRoute('monster/:Categorie', 'GET', 'MonsterApiController', 'getFilterMonsters');
 $router->addRoute('monster/:ID', 'GET', 'MonsterApiController', 'getMonster');
 $router->addRoute('monster/:ID', 'DELETE', 'MonsterApiController', 'deleteMonster');
 $router->addRoute('monster', 'POST', 'MonsterApiController', 'insertMonster'); 
