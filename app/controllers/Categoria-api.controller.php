@@ -98,7 +98,7 @@ class CategorieApiController {
         }
     }
 
-    public function updateMonster($params = null) {
+    public function updateCategorie($params = null) {
         $categorie = $this->getData();
 
         // if(!$this->authHelper->isLoggedIn()){

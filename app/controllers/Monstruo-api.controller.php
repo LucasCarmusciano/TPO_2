@@ -27,36 +27,36 @@ class MonsterApiController {
         $direction = $_GET['direction'];
         $page = $_GET['page'];
         $limit = $_GET['limit'];
-        if(!$order==null){
-            // compruebo que el get obtenido sea correcto
-            if ((in_array($order,$this->model->getColumns())&&(($direction==null)||($direction=='ASC')||($direction=='DESC')))) {
-                $monsters = $this->model->getAllOrderBy($order, $direction);
-                $this->paginacion($monsters, $page, $limit);
-            }else{
-                $this->view->response("Parametros GET incorrectos", 400); //
-            }
+        $categorie = $_GET['categorie'];
+        if(isset($categorie)){
+            $this->getFilterMonsters($categorie, $order, $direction, $page, $limit);
         }else{
-            $monsters = $this->model->getAll();
-            $this->paginacion($monsters, $page, $limit);
+            if(!$order==null){
+                // compruebo que el get obtenido sea correcto
+                if ((in_array($order,$this->model->getColumns())&&(($direction==null)||($direction=='ASC')||($direction=='DESC')))) {
+                    $monsters = $this->model->getAllOrderBy($order, $direction);
+                    $this->paginacion($monsters, $page, $limit);
+                }else{
+                    $this->view->response("Parametros GET incorrectos", 400); //
+                }
+            }else{
+                $monsters = $this->model->getAll();
+                $this->paginacion($monsters, $page, $limit);
+            }
         }
     }
     
-    public function getFilterMonsters($params = null){
-        $nombreCategoria = $params[':Categorie'];
-        $order = $_GET['order'];
-        $direction = $_GET['direction'];
-        $page = $_GET['page'];
-        $limit = $_GET['limit'];
+    private function getFilterMonsters($categorie, $order, $direction, $page, $limit){
         if(!$order==null){
             // compruebo que el get obtenido sea correcto
             if ((in_array($order,$this->model->getColumns())&&(($direction==null)||($direction=='ASC')||($direction=='DESC')))) {
-                $monsters = $this->model->getFilterOrderBy($nombreCategoria, $order, $direction);
+                $monsters = $this->model->getFilterOrderBy($categorie, $order, $direction);
                 $this->paginacion($monsters, $page, $limit);
             }else{
                 $this->view->response("Parametros GET incorrectos", 400); //
             }
         }else{
-            $monsters = $this->model->getFilter($nombreCategoria);
+            $monsters = $this->model->getFilter($categorie);
             $this->paginacion($monsters, $page, $limit);
         }
     }
