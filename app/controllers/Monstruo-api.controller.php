@@ -30,6 +30,7 @@ class MonsterApiController {
         if(!$order==null){
             // compruebo que el get obtenido sea correcto
             if ((in_array($order,$this->model->getColumns())&&(($direction==null)||($direction=='ASC')||($direction=='DESC')))) {
+                $monsters = $this->model->getAllOrderBy($order, $direction);
                 $this->paginacion($monsters, $page, $limit);
             }else{
                 $this->view->response("Parametros GET incorrectos", 400); //
