@@ -37,7 +37,7 @@ class MonsterApiController {
                     $monsters = $this->model->getAllOrderBy($order, $direction);
                     $this->paginacion($monsters, $page, $limit);
                 }else{
-                    $this->view->response("Parametros GET incorrectos", 400); //
+                    $this->view->response("Parametros GET incorrectos", 400);
                 }
             }else{
                 $monsters = $this->model->getAll();
@@ -53,7 +53,7 @@ class MonsterApiController {
                 $monsters = $this->model->getFilterOrderBy($categorie, $order, $direction);
                 $this->paginacion($monsters, $page, $limit);
             }else{
-                $this->view->response("Parametros GET incorrectos", 400); //
+                $this->view->response("Parametros GET incorrectos", 400);
             }
         }else{
             $monsters = $this->model->getFilter($categorie);
@@ -69,7 +69,7 @@ class MonsterApiController {
               $list = array_slice($list, $page*$limit, $limit);
               $this->view->response($list);
             }else{
-                $this->view->response("Pagina o limite incorrectos", 400); //
+                $this->view->response("Pagina o limite incorrectos", 400);
             }
         }else{
             $this->view->response($list, 200);
@@ -90,43 +90,46 @@ class MonsterApiController {
     public function deleteMonster($params = null) {
         $id = $params[':ID'];
         
-        // if(!$this->authHelper->isLoggedIn()){
-            //     $this->view->response("No estas logeado", 401);
-            //     return;
-            // }
-            
-            $monster = $this->model->get($id);
-            if ($monster) {
-                $this->model->delete($id);
-                $this->view->response($monster);
-            } else 
-            $this->view->response("El monstruo con el id=$id no existe", 404);
+        // Verifico que tenga el token
+        if(!$this->authHelper->isLoggedIn()){
+            $this->view->response("No estas logeado", 401);
+            return;
         }
+            
+        $monster = $this->model->get($id);
+        if ($monster) {
+            $this->model->delete($id);
+            $this->view->response($monster);
+        } else 
+        $this->view->response("El monstruo con el id=$id no existe", 404);
+    }
         
         public function insertMonster($params = null) {
             $monster = $this->getData();
             
-            // if(!$this->authHelper->isLoggedIn()){
-                //     $this->view->response("No estas logeado", 401);
-                //     return;
-                // }
-                
-                if (empty($monster->nombre) || empty($monster->debilidad) || empty($monster->descripcion) || empty($monster->id_Categoria_fk)) {
-                    $this->view->response("Complete los datos", 400);
-                } else {
-                    $id = $this->model->insert($monster->nombre, $monster->debilidad, $monster->descripcion, $monster->id_Categoria_fk, $monster->imagen);
-                    $monster = $this->model->get($id);
-                    $this->view->response($monster, 201);
-                }
+            // Verifico que tenga el token
+            if(!$this->authHelper->isLoggedIn()){
+                    $this->view->response("No estas logeado", 401);
+                    return;
             }
             
-            public function updateMonster($params = null) {
-                $monster = $this->getData();
-                
-                // if(!$this->authHelper->isLoggedIn()){
-                    //     $this->view->response("No estas logeado", 401);
-        //     return;
-        // }
+            if (empty($monster->nombre) || empty($monster->debilidad) || empty($monster->descripcion) || empty($monster->id_Categoria_fk)) {
+                $this->view->response("Complete los datos", 400);
+            } else {
+                $id = $this->model->insert($monster->nombre, $monster->debilidad, $monster->descripcion, $monster->id_Categoria_fk, $monster->imagen);
+                $monster = $this->model->get($id);
+                $this->view->response($monster, 201);
+            }
+        }
+        
+        public function updateMonster($params = null) {
+            $monster = $this->getData();
+            
+            // Verifico que tenga el token
+            if(!$this->authHelper->isLoggedIn()){
+                $this->view->response("No estas logeado", 401);
+                return;
+            }
 
         $id = $params[':ID'];
         $autocompleter = $this->model->get($id);

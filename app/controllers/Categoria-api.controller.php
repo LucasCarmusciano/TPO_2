@@ -33,7 +33,7 @@ class CategorieApiController {
                 $categories = $this->model->getAllOrderBy($order, $direction);
                 $this->paginacion($categories, $page, $limit);
             }else{
-                $this->view->response("Parametros GET incorrectos", 400); //
+                $this->view->response("Parametros GET incorrectos", 400);
             }
         }else{
             $categories = $this->model->getAll();
@@ -47,7 +47,7 @@ class CategorieApiController {
               $list = array_slice($list, $page*$limit, $limit);
               $this->view->response($list);
             }else{
-                $this->view->response("Pagina o limite incorrectos", 400); //
+                $this->view->response("Pagina o limite incorrectos", 400);
             }
         }else{
             $this->view->response($list, 200);
@@ -68,10 +68,11 @@ class CategorieApiController {
     public function deleteCategorie($params = null) {
         $id = $params[':ID'];
 
-        // if(!$this->authHelper->isLoggedIn()){
-        //     $this->view->response("No estas logeado", 401);
-        //     return;
-        // }
+        // Verifico que tenga el token
+        if(!$this->authHelper->isLoggedIn()){
+            $this->view->response("No estas logeado", 401);
+            return;
+        }
 
         $categorie = $this->model->get($id);
         if ($categorie) {
@@ -84,10 +85,11 @@ class CategorieApiController {
     public function insertCategorie($params = null) {
         $categorie = $this->getData();
 
-        // if(!$this->authHelper->isLoggedIn()){
-        //     $this->view->response("No estas logeado", 401);
-        //     return;
-        // }
+        // Verifico que tenga el token
+        if(!$this->authHelper->isLoggedIn()){
+            $this->view->response("No estas logeado", 401);
+            return;
+        }
         
         if (empty($categorie->nombre) || empty($categorie->descripcion)) {
             $this->view->response("Complete los datos", 400);
@@ -101,10 +103,11 @@ class CategorieApiController {
     public function updateCategorie($params = null) {
         $categorie = $this->getData();
 
-        // if(!$this->authHelper->isLoggedIn()){
-        //     $this->view->response("No estas logeado", 401);
-        //     return;
-        // }
+        // Verifico que tenga el token
+        if(!$this->authHelper->isLoggedIn()){
+            $this->view->response("No estas logeado", 401);
+            return;
+        }
 
         $id = $params[':ID'];
         $autocompleter = $this->model->get($id);

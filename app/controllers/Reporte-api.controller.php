@@ -37,7 +37,7 @@ class ReportApiController {
                     $reports = $this->model->getAllOrderBy($order, $direction);
                     $this->paginacion($reports, $page, $limit);
                 }else{
-                    $this->view->response("Parametros GET incorrectos", 400); //
+                    $this->view->response("Parametros GET incorrectos", 400);
                 }
             }else{
                 $reports = $this->model->getAll();
@@ -53,7 +53,7 @@ class ReportApiController {
                 $reports = $this->model->getFilterOrderBy($monster, $order, $direction);
                 $this->paginacion($reports, $page, $limit);
             }else{
-                $this->view->response("Parametros GET incorrectos", 400); //
+                $this->view->response("Parametros GET incorrectos", 400);
             }
         }else{
             $reports = $this->model->getFilter($monster);
@@ -69,7 +69,7 @@ class ReportApiController {
               $list = array_slice($list, $page*$limit, $limit);
               $this->view->response($list);
             }else{
-                $this->view->response("Pagina o limite incorrectos", 400); //
+                $this->view->response("Pagina o limite incorrectos", 400);
             }
         }else{
             $this->view->response($list, 200);
@@ -90,10 +90,11 @@ class ReportApiController {
     public function deleteReport($params = null) {
         $id = $params[':ID'];
         
-        // if(!$this->authHelper->isLoggedIn()){
-            //     $this->view->response("No estas logeado", 401);
-            //     return;
-            // }
+        // Verifico que tenga el token
+        if(!$this->authHelper->isLoggedIn()){
+            $this->view->response("No estas logeado", 401);
+            return;
+        }
             
             $report = $this->model->get($id);
             if ($report) {
@@ -106,10 +107,11 @@ class ReportApiController {
         public function insertReport($params = null) {
             $report = $this->getData();
             
-            // if(!$this->authHelper->isLoggedIn()){
-                //     $this->view->response("No estas logeado", 401);
-                //     return;
-                // }
+            // Verifico que tenga el token
+            if(!$this->authHelper->isLoggedIn()){
+                $this->view->response("No estas logeado", 401);
+                return;
+            }
                 
             if (empty($report->narrador) || empty($report->historia) || empty($report->agresividad) || empty($report->id_Monstruo_fk)) {
                 $this->view->response("Complete los datos", 400);
@@ -123,10 +125,11 @@ class ReportApiController {
         public function updateReport($params = null) {
             $report = $this->getData();
             
-            // if(!$this->authHelper->isLoggedIn()){
-            //     $this->view->response("No estas logeado", 401);
-            //     return;
-            // }
+            // Verifico que tenga el token
+            if(!$this->authHelper->isLoggedIn()){
+                $this->view->response("No estas logeado", 401);
+                return;
+            }
 
             $id = $params[':ID'];
             $autocompleter = $this->model->get($id);
