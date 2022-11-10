@@ -1,12 +1,12 @@
 # TPO_2
 
-Este proyecto esta destinado a la realizacion de el Trabajo Practico Obligatorio de WEB 2.
-A continuacion se mostrará en cada apartado el uso de la api con sus respectivos endpoints para acceder a las distintas funcionalidades de las diferentes tablas.
+Este proyecto esta destinado a la realizacion de el Trabajo Practico Obligatorio de WEB 2. [\n]
+A continuacion se mostrará en cada apartado el uso de la api con sus respectivos endpoints para acceder a las distintas funcionalidades de las diferentes tablas. [\n]
 Su endpoint base será: http://localhost:8080/*tucarpetalocal*/TPO_2/api/
 
 ## Monstruo 
 
-URL Base: http://localhost:8080/*tucarpetalocal*/TPO_2/api/monster
+URL Base: http://localhost:8080/*tucarpetalocal*/TPO_2/api/monster. [\n]
 Valores de la tabla: id, nombre, debilidad, descripcion, id_Categoria_fk, imagen.
 
 ### Obtener Monstruos
