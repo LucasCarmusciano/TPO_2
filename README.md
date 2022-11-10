@@ -10,7 +10,7 @@ A continuacion se mostrará en cada apartado el uso de la api con sus respectivo
 
 ## Monstruo 
 
-URL Base: http://localhost:8080/*tucarpetalocal*/TPO_2/api/monster.
+URL Base: http://localhost:8080/tucarpetalocal/TPO_2/api/monster
 
 Valores de la tabla: id, nombre, debilidad, descripcion, id_Categoria_fk, imagen.
 
@@ -127,5 +127,114 @@ Valores de la tabla: id, nombre, debilidad, descripcion, id_Categoria_fk, imagen
 
         [request URL]
         http://localhost:8080/tucarpetalocal/TPO_2/api/monster/22
+
+## Categoria 
+
+URL Base: http://localhost:8080/tucarpetalocal/TPO_2/api/categorie
+
+Valores de la tabla: id, nombre, descripcion.
+
+### Obtener Categorias
+
+* URL: http://localhost:8080/tucarpetalocal/TPO_2/api/categories  ==  (url base)
+* Método: GET
+* Posibles funcionalidades (junto al uso combinado de estas): 
+    1. ***Ordenamiento*** -> Es necesario generar un parametro GET con el nombre "order" y siendo igual a cualquier valor de la tabla. Ademas de esto, la lista es posible ordenarla de forma ascendente o descendente, esto es logrado con el parametro GET "direction", el cual debe ser igual a ASC o DESC (en caso de no aclarar *direction*, tomará un valor por defecto igual a ASC).
+
+        Por ejemplo:
+
+        URL?order=descripcion  **->  obtiene el listado ordenado por descripción de forma ascendente**
+
+        URL?order=nombre&direction=DESC  **->  obtiene el listado ordenado por categoria de forma descendente**       
+    2. ***Paginación*** -> Es necesario generar un parametro GET en el nombre "page" para obtener el valor entero de la página buscada y otro con el nombre "limit" para obtener el valor entero de la cantidad de elementos por página. Tener en cuenta que el valor de la pagina inicial es igual a 0.
+
+        Por ejemplo:
+            
+        URL?page=2&limit=2  **->  obtiene el listado los monstruos de la página 2 con limite de pagina igual a 2, es decir, los elementos 4,5**
+
+* Posibles respuestas: 
+    1. 200 
+    2. 400-499 (junto a un mensaje detallando su error)
+* Ejemplo de uso:
+
+        Obtengo las categorias 3,4,5 (pagina 1 con limite 3) ordenadas de forma descendente segun su id:
+
+        http://localhost:8080/tucarpetalocal/TPO_2/api/categorie?order=id&direction=DESC&page=1&limit=3
+        
+
+### Obtener solo una Categoria
+
+* URL: http://localhost:8080/tucarpetalocal/TPO_2/api/categorie/id  ==  (url base)/id
+* Metodo: GET
+* Posibles respuestas: 
+    1. 200 
+    2. 400-499 (junto a un mensaje detallando su error)
+* Ejemplo de uso:
+
+        Obtengo la categoria con el id 16:
+
+        http://localhost:8080/tucarpetalocal/TPO_2/api/categorie/16
+
+### Borrar Categoria
+
+* URL: http://localhost:8080/tucarpetalocal/TPO_2/api/categorie/id  ==  (url base)/id
+* Metodo: DELETE
+* Posibles respuestas: 
+    1. 200 
+    2. 400-499 (junto a un mensaje detallando su error)
+* Parametros:
+    1. Token de autenticacion (header)
+* Ejemplo de uso:
+
+        Luego de ingresarme y obtener el token, borro la categoria con el id 18:
+
+        http://localhost:8080/tucarpetalocal/TPO_2/api/categorie/18
+
+### Insertar Categoria
+
+* URL: http://localhost:8080/tucarpetalocal/TPO_2/api/categorie  ==  (url base)
+* Metodo: POST
+* Posibles respuestas: 
+    1. 201 CREATED 
+    2. 400-499 (junto a un mensaje detallando su error)
+* Parametros:
+    1. Token de autenticacion (header)
+    2. Datos a ingresar (body)
+* Ejemplo de uso:
+
+        Luego de ingresarme y obtener el token, agrego los datos para crear una nueva categoria en el body, haciendo uso del 
+        endpoint:
+
+        [body]
+        {
+            "nombre": "Categoria",
+            "descripcion": "..."
+        }
+
+        [request URL]
+        http://localhost:8080/tucarpetalocal/TPO_2/api/categorie
+
+### Editar Categoria
+
+* URL: http://localhost:8080/tucarpetalocal/TPO_2/api/categorie/id  ==  (url base)/id
+* Metodo: PUT
+* Posibles respuestas: 
+    1. 201 CREATED 
+    2. 400-499 (junto a un mensaje detallando su error)
+* Parametros:
+    1. Token de autenticacion (header)
+    2. Datos a ingresar (body)
+* Ejemplo de uso:
+
+        Luego de ingresarme y obtener el token, agrego la nueva descripción (sus valores no definidos conservaran su 
+        valor previo) para modificar la categoria con el id 12 en el body, haciendo uso del endpoint:
+
+        [body]
+        {
+            "descripcion": "Esta categoria fue modificada"
+        }
+
+        [request URL]
+        http://localhost:8080/tucarpetalocal/TPO_2/api/categorie/12
 
 
