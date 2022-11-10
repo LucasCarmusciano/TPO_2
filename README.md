@@ -44,7 +44,8 @@ Valores de la tabla: id, nombre, debilidad, descripcion, id_Categoria_fk, imagen
     2. 400-499 (junto a un mensaje detallando su error)
 * Ejemplo de uso:
 
-        Si quiero obtener la lista de los monstruos que se encuentran en la pagina 2 (y cada pagina cuenta con 3 elementos), de tipo 'Ogro' y ordenarlos de forma ascendente segun su debilidad:
+        Si quiero obtener la lista de los monstruos que se encuentran en la pagina 2 (y cada pagina cuenta con 3 elementos), de 
+        tipo 'Ogro' y ordenarlos de forma ascendente segun su debilidad:
 
         http://localhost:8080/tucarpetalocal/TPO_2/api/monster?order=debilidad&direction=ASC&categorie=Ogro&page=2&limit=3
         
@@ -89,7 +90,8 @@ Valores de la tabla: id, nombre, debilidad, descripcion, id_Categoria_fk, imagen
     2. Datos a ingresar (body)
 * Ejemplo de uso:
 
-        Luego de ingresarme y obtener el token, agrego los datos para crear un nuevo monstruo en el body, haciendo uso del endpoint:
+        Luego de ingresarme y obtener el token, agrego los datos para crear un nuevo monstruo en el body, haciendo uso del 
+        endpoint:
 
         [body]
         {
@@ -114,7 +116,8 @@ Valores de la tabla: id, nombre, debilidad, descripcion, id_Categoria_fk, imagen
     2. Datos a ingresar (body)
 * Ejemplo de uso:
 
-        Luego de ingresarme y obtener el token, agrego el nuevo nombre y debilidad (sus valores no definidos conservaran su valor previo) para modificar al monstruo con el id 22 en el body, haciendo uso del endpoint:
+        Luego de ingresarme y obtener el token, agrego el nuevo nombre y debilidad (sus valores no definidos conservaran su 
+        valor previo) para modificar al monstruo con el id 22 en el body, haciendo uso del endpoint:
 
         [body]
         {
