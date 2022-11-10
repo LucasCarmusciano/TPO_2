@@ -51,13 +51,21 @@ class ReportApiController {
             // compruebo que el get obtenido sea correcto
             if ((in_array($order,$this->model->getColumns())&&(($direction==null)||($direction=='ASC')||($direction=='DESC')))) {
                 $reports = $this->model->getFilterOrderBy($monster, $order, $direction);
-                $this->paginacion($reports, $page, $limit);
+                if(!empty($reports)){
+                    $this->paginacion($reports, $page, $limit);
+                }else{
+                    $this->view->response("No existen reportes de $monster", 404);
+                }
             }else{
                 $this->view->response("Parametros GET incorrectos", 400);
             }
         }else{
             $reports = $this->model->getFilter($monster);
-            $this->paginacion($reports, $page, $limit);
+            if(!empty($reports)){
+                $this->paginacion($reports, $page, $limit);
+            }else{
+                $this->view->response("No existen reportes de $monster", 404);
+            }
         }
     }
 

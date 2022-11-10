@@ -51,13 +51,21 @@ class MonsterApiController {
             // compruebo que el get obtenido sea correcto
             if ((in_array($order,$this->model->getColumns())&&(($direction==null)||($direction=='ASC')||($direction=='DESC')))) {
                 $monsters = $this->model->getFilterOrderBy($categorie, $order, $direction);
-                $this->paginacion($monsters, $page, $limit);
+                if(!empty($monsters)){
+                    $this->paginacion($monsters, $page, $limit);
+                }else{
+                    $this->view->response("No existen monstruos con la categoria = $categorie", 404);
+                }
             }else{
                 $this->view->response("Parametros GET incorrectos", 400);
             }
         }else{
             $monsters = $this->model->getFilter($categorie);
-            $this->paginacion($monsters, $page, $limit);
+            if(!empty($monsters)){
+                $this->paginacion($monsters, $page, $limit);
+            }else{
+                $this->view->response("No existen monstruos con la categoria = $categorie", 404);
+            }
         }
     }
 
