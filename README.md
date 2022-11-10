@@ -238,3 +238,122 @@ Valores de la tabla: id, nombre, descripcion.
         http://localhost:8080/tucarpetalocal/TPO_2/api/categorie/12
 
 
+
+## Reporte 
+
+URL Base: http://localhost:8080/tucarpetalocal/TPO_2/api/report
+
+Valores de la tabla: id, narrador, historia, agresividad, id_Monstruo_fk.
+
+### Obtener Reportes
+
+* URL: http://localhost:8080/tucarpetalocal/TPO_2/api/report  ==  (url base)
+* Método: GET
+* Posibles funcionalidades (junto al uso combinado de estas): 
+    1. ***Ordenamiento*** -> Es necesario generar un parametro GET con el nombre "order" y siendo igual a cualquier valor de la tabla a excepcion de 'id_Monstruo_fk' el cual fue reemplazado por 'monstruo'. Ademas de esto, la lista es posible ordenarla de forma ascendente o descendente, esto es logrado con el parametro GET "direction", el cual debe ser igual a ASC o DESC (en caso de no aclarar *direction*, tomará un valor por defecto igual a ASC).
+
+        Por ejemplo:
+
+        URL?order=narrador  **->  obtiene el listado ordenado por narrador de forma ascendente**
+
+        URL?order=agresividad&direction=DESC  **->  obtiene el listado ordenado por agresividad de forma descendente**
+
+    2. ***Filtrado*** -> Es necesario generar un parametro GET en el nombre "monster" el cual coincida con el nombre de los monstruos a los cuales estan asignados los reportes buscados.
+
+        Por ejemplo:
+
+        URL?monster=Jabali  **->  obtiene el listado de todos los reportes al monstruo Jabali**
+            
+    3. ***Paginación*** -> Es necesario generar un parametro GET en el nombre "page" para obtener el valor entero de la página buscada y otro con el nombre "limit" para obtener el valor entero de la cantidad de elementos por página. Tener en cuenta que el valor de la pagina inicial es igual a 0.
+
+        Por ejemplo:
+            
+        URL?page=0&limit=3  **->  obtiene el listado los monstruos de la página 0 con limite de pagina igual a 3, es decir, los elementos 0,1,2**
+
+* Posibles respuestas: 
+    1. 200 
+    2. 400-499 (junto a un mensaje detallando su error)
+* Ejemplo de uso:
+
+        Obtengo la lista de reportes de Djinn que se encuentran en la pagina 4, siendo que se muetra solo dos reportes por pagina, ordenados de forma descendente segun su narrador:
+
+        http://localhost:8080/tucarpetalocal/TPO_2/api/report?order=narrador&direction=DESC&categorie=Djinn&page=4&limit=2
+        
+
+### Obtener solo un Reporte
+
+* URL: http://localhost:8080/tucarpetalocal/TPO_2/api/report/id  ==  (url base)/id
+* Metodo: GET
+* Posibles respuestas: 
+    1. 200 
+    2. 400-499 (junto a un mensaje detallando su error)
+* Ejemplo de uso:
+
+        Obtengo el reporte con el id 2:
+
+        http://localhost:8080/tucarpetalocal/TPO_2/api/monster/2
+
+### Borrar Reporte
+
+* URL: http://localhost:8080/tucarpetalocal/TPO_2/api/report/id  ==  (url base)/id
+* Metodo: DELETE
+* Posibles respuestas: 
+    1. 200 
+    2. 400-499 (junto a un mensaje detallando su error)
+* Parametros:
+    1. Token de autenticacion (header)
+* Ejemplo de uso:
+
+        Luego de ingresarme y obtener el token, borro el reporte con el id 1:
+
+        http://localhost:8080/tucarpetalocal/TPO_2/api/report/1
+
+### Insertar Reporte
+
+* URL: http://localhost:8080/tucarpetalocal/TPO_2/api/report  ==  (url base)
+* Metodo: POST
+* Posibles respuestas: 
+    1. 201 CREATED 
+    2. 400-499 (junto a un mensaje detallando su error)
+* Parametros:
+    1. Token de autenticacion (header)
+    2. Datos a ingresar (body)
+* Ejemplo de uso:
+
+        Luego de ingresarme y obtener el token, agrego los datos un reporte nuevo en el body, haciendo uso del 
+        endpoint:
+
+        [body]
+        {
+            "narrador": "Anonimo",
+            "agresividad": 0,
+            "historia": "...",
+            "id_Monstruo_fk": 50 
+        }
+
+        [request URL]
+        http://localhost:8080/tucarpetalocal/TPO_2/api/report
+
+### Editar Reporte
+
+* URL: http://localhost:8080/tucarpetalocal/TPO_2/api/report/id  ==  (url base)/id
+* Metodo: PUT
+* Posibles respuestas: 
+    1. 201 CREATED 
+    2. 400-499 (junto a un mensaje detallando su error)
+* Parametros:
+    1. Token de autenticacion (header)
+    2. Datos a ingresar (body)
+* Ejemplo de uso:
+
+        Luego de ingresarme y obtener el token, agrego otro nivel de agresividad y narrador (sus valores no definidos 
+        conservaran su valor previo) para modificar el reporte con el id 2 en el body, haciendo uso del endpoint:
+
+        [body]
+        {
+            "narrador": "Ciudadano Comun",
+            "agresividad": 5
+        }
+
+        [request URL]
+        http://localhost:8080/tucarpetalocal/TPO_2/api/report/2
