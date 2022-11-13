@@ -3,8 +3,8 @@ require_once './libs/Router.php';
 require_once './app/controllers/Monstruo-api.controller.php';
 require_once './app/controllers/Categoria-api.controller.php';
 require_once './app/controllers/Reporte-api.controller.php';
-
 require_once './app/controllers/Admin-api.controller.php';
+require_once './app/controllers/Router-api.controller.php';
 
 // crea el router
 $router = new Router();
@@ -31,7 +31,7 @@ $router->addRoute('report/:ID', 'PUT', 'ReportApiController', 'updateReport');
 $router->addRoute('admin/token', 'GET', 'AdminApiController', 'getToken'); 
 
 
-
+$router->setDefaultRoute('defaultRouterMsg', 'message');
 // ejecuta la ruta (sea cual sea)
 $router->route($_GET["resource"], $_SERVER['REQUEST_METHOD']);
 ?>
